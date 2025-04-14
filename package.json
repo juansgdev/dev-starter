@@ -1,0 +1,16 @@
+{
+  "name": "dev-starter",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "bin": {
+    "dev": "index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "juansgdev",
+  "license": "ISC",
+  "description": ""
+}
