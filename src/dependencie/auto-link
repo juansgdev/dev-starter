@@ -1,0 +1,3 @@
+#!/bin/bash
+npm unlink -g dev-starter
+npm link

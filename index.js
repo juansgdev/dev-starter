@@ -1,31 +1,40 @@
 #!/usr/bin/node
 import { spawn } from "child_process";
-import { argv } from "process";
-import fs from 'fs';
+import { argv, exit } from "process";
 
-const PATH = "~/dev/projetos/";
+const PATH = "/home/juan/dev/projetos/";
 
-const exec = (project) => {
-    spawn(`vim`, [`${PATH}${project}/`], {stdio: 'inherit'});
+const exec = (command, argument) => {
+    const child = spawn(command, argument);
+
+    child.stdout.on('data', (data) => {
+        console.log(''+data);
+    });
+
+    child.stderr.on('data', (data) => {
+        console.log(''+data);
+    });
 };
 
-// O parametro é a partir do 2
-
-if (argv[2] == 'go') {
-    exec(argv[3]);
+const writeExec = (command, argument) => {
+    spawn(command, argument, {stdio: 'inherit'});
 };
 
-// const checkDir = (project) => {
-//     fs.readdir(PATH+project, (err, files) => {
-//         if (err) {
-//             console.error("Erro: Diretório não disponível ou encontrado! \n\n[LOG]: " + err);
-//             return;
-//         }
+const map = (dir) => {
+    const child = spawn('ls', [PATH+dir+'/']);
 
-//         files.forEach(file => {
-//             console.log(file);
-//         });
-//     });
-// };
+    child.stdout.on('data', (data) => {
+        if (argv[2] == 'go') {
+            writeExec('vim', [PATH+dir+'/'])
+        }
+    });
 
-// checkDir(argv[2]);
+    child.stderr.on('data', (data) => {
+        if (String(''+data).includes('ls: não foi possível')) {
+            console.log('Erro: projeto não encontrado ou indiponível!');
+            exit(1);
+        } 
+    });
+};
+
+map(argv[3]);
